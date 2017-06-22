@@ -12,7 +12,7 @@ defmodule TheElixir.Application do
     children = [
       # Starts a worker by calling: TheElixir.Worker.start_link(arg1, arg2, arg3)
       # worker(TheElixir.Worker, [arg1, arg2, arg3]),
-      # worker(TheElixir.Lobby, []),
+      worker(TheElixir.Inventory, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
