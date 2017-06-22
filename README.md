@@ -1,5 +1,7 @@
 # TheElixir
 
+A text adventure to learn elixir
+
 **TODO: Add description**
 
 ## Installation
@@ -17,3 +19,4 @@ Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_do
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/the_elixir](https://hexdocs.pm/the_elixir).
 
+=======
