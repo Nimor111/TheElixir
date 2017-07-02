@@ -1,6 +1,6 @@
 # TheElixir
 
-## A text adventure to learn elixir
+A text adventure to learn elixir
 
 ## Bugs and/or TODOS
 1. Keep the inventory during process shutdowns
