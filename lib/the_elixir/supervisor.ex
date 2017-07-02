@@ -1,15 +1,13 @@
 defmodule TheElixir.Supervisor do
   use Supervisor
-
-  @name :inventory
-
+ 
   def start_link do
-    Supervisor.start_link(__MODULE__, :ok)
+    Supervisor.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
   def init(:ok) do 
     children = [
-      worker(TheElixir.Inventory, [@name]),
+      supervisor(TheElixir.Components.Supervisor, []),
     ]
 
     supervise(children, strategy: :one_for_all)

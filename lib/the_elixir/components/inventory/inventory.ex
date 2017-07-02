@@ -1,4 +1,4 @@
-defmodule TheElixir.Inventory do
+defmodule TheElixir.Components.Inventory do
   use GenServer
 
   # Client API
