@@ -29,7 +29,8 @@ defmodule TheElixirInventoryTest do
     assert {:ok, _} = TheElixir.Inventory.lookup(inventory, "head")
 
     TheElixir.Inventory.stop(inventory)
-    :timer.sleep(2) 
-    assert TheElixir.Inventory.lookup(inventory, "head") == :error
+    :timer.sleep(2)
+    # this is retarded
+    assert TheElixir.Inventory.lookup(:inventory, "head") == :error
   end
 end

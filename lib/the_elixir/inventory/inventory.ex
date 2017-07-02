@@ -6,13 +6,12 @@ defmodule TheElixir.Inventory do
   @doc """
   Starts the process
   """
-  def start_link(name) do
+  def start_link(name \\ :inventory) do
     GenServer.start_link(__MODULE__, name, name: name)
   end
 
   @doc """
-  Lookup an item at `position` in inventory
-
+  Lookup an item at `position` in inventory 
   Returns `{:ok, item}` on success, `:error` otherwise
   """
   def lookup(server, position) do
@@ -40,7 +39,8 @@ defmodule TheElixir.Inventory do
   Retrieves the entire inventory
   """
   def get(server) do
-    GenServer.call(server, {:get, []}) end
+    GenServer.call(server, {:get, []})
+  end
 
   @doc """
   Stop the inventory process
@@ -62,10 +62,10 @@ defmodule TheElixir.Inventory do
   def handle_call({:add, position, item}, _from, inventory) do
     case lookup(inventory, position) do
       {:ok, pid} ->
-        {:reply, pid, inventory}
+        {:reply, {:ok, pid} , inventory}
       :error ->
         :ets.insert(inventory, {position, item})
-        {:reply, item, inventory}
+        {:reply, {:ok, item}, inventory}
     end
   end
 
