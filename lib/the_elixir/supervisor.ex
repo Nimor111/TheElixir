@@ -7,7 +7,7 @@ defmodule TheElixir.Supervisor do
 
   def init(:ok) do 
     children = [
-      supervisor(TheElixir.Inventory.Supervisor, [])
+      worker(TheElixir.Inventory, [TheElixir.Inventory]),
     ]
 
     supervise(children, strategy: :one_for_one)

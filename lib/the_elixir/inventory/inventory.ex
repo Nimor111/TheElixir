@@ -4,63 +4,77 @@ defmodule TheElixir.Inventory do
   # Client API
   
   @doc """
-  Start the inventory bag with given `name`
-  """ 
-  def start_link do
-    GenServer.start_link(__MODULE__, [], name: :inventory)
-  end 
+  Starts the process
+  """
+  def start_link(name) do
+    GenServer.start_link(__MODULE__, name, name: name)
+  end
 
   @doc """
   Lookup an item at `position` in inventory
 
   Returns `{:ok, item}` on success, `:error` otherwise
-  """ 
-  def lookup(position) do
-    GenServer.call(:inventory, {:lookup, position})
+  """
+  def lookup(server, position) do
+    case :ets.lookup(server, position) do
+      [{^position, item}] -> {:ok, item}
+      [] -> :error
+    end
   end 
 
   @doc """
   Add an `item` at `position` to the inventory
   """
-  def add(position, item) do
-    GenServer.cast(:inventory, {:add, position, item})
+  def add(server, position, item) do
+    GenServer.call(server, {:add, position, item})
   end
 
   @doc """
   Remove item at `position` in inventory
   """
-  def delete(position) do
-    GenServer.cast(:inventory, {:delete, position})
+  def delete(server, position) do
+    GenServer.cast(server, {:delete, position})
   end
 
   @doc """
   Retrieves the entire inventory
   """
-  def get do
-    GenServer.call(:inventory, {:get, []})
+  def get(server) do
+    GenServer.call(server, {:get, []}) end
+
+  @doc """
+  Stop the inventory process
+  """
+  def stop(server) do
+    GenServer.stop(server)
   end
 
   # Server callbacks
-  def init(_) do
-    {:ok, %{}}
-  end
-
-  def handle_call({:lookup, position}, _from, inventory) do
-    case Map.fetch(inventory, position) do
-      {:ok, item} -> {:reply, {:ok, item}, inventory}
-      :error      -> {:reply, :error, inventory}
-    end
+  def init(table) do
+    inventory = :ets.new(table, [:named_table, read_concurrency: true])
+    {:ok, inventory}
   end
 
   def handle_call({:get, []}, _from, inventory) do
     {:reply, inventory, inventory}
   end
 
-  def handle_cast({:add, position, item}, inventory) do
-    {:noreply, Map.put(inventory, position, item)} 
+  def handle_call({:add, position, item}, _from, inventory) do
+    case lookup(inventory, position) do
+      {:ok, pid} ->
+        {:reply, pid, inventory}
+      :error ->
+        :ets.insert(inventory, {position, item})
+        {:reply, item, inventory}
+    end
   end
 
   def handle_cast({:delete, position}, inventory) do
-    {:noreply, Map.delete(inventory, position)}
+    :ets.delete(inventory, position)
+    {:noreply, inventory}
+  end
+
+  def handle_info(_msg, state) do
+    {:noreply, state}
   end
 end
