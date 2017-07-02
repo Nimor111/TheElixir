@@ -4,7 +4,7 @@ defmodule TheElixir.Inventory do
   # Client API
   
   @doc """
-  Start the inventory bag
+  Start the inventory bag with given `name`
   """ 
   def start_link do
     GenServer.start_link(__MODULE__, [], name: :inventory)
