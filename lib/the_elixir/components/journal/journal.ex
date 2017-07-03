@@ -36,6 +36,13 @@ defmodule TheElixir.Components.Journal do
     GenServer.cast(journal, {:delete, quest_name})
   end
 
+  @doc """
+  Get a list of quest names in `journal`
+  """
+  def get(journal) do
+    GenServer.call(journal, {:get, []})
+  end
+
   # Server callbacks
   def init(table) do
     journal = :ets.new(table, [:named_table, read_concurrency: true])
@@ -52,9 +59,14 @@ defmodule TheElixir.Components.Journal do
     end
   end
 
+  def handle_call({:get, []}, _from, journal) do
+    quest_names = :ets.match(journal, {:"$1", :_}) |> List.flatten
+    {:reply, quest_names, journal}
+  end
+
   def handle_cast({:delete, quest_name}, journal) do
     case lookup(journal, quest_name) do
-      {:ok, quest} ->
+      {:ok, _} ->
         :ets.delete(journal, quest_name)
         {:noreply, journal} 
       :error ->

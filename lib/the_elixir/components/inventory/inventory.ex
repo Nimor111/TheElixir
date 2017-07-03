@@ -36,7 +36,7 @@ defmodule TheElixir.Components.Inventory do
   end
 
   @doc """
-  Retrieves the entire inventory
+  Retrieves the entire `inventory`
   """
   def get(server) do
     GenServer.call(server, {:get, []})
@@ -56,7 +56,8 @@ defmodule TheElixir.Components.Inventory do
   end
 
   def handle_call({:get, []}, _from, inventory) do
-    {:reply, inventory, inventory}
+    items = :ets.match(inventory, {:"$1", :"$2"})
+    {:reply, items, inventory}
   end
 
   def handle_call({:add, position, item}, _from, inventory) do
@@ -71,7 +72,7 @@ defmodule TheElixir.Components.Inventory do
 
   def handle_cast({:delete, position}, inventory) do
     case lookup(inventory, position) do
-      {:ok, item} ->
+      {:ok, _} ->
         :ets.delete(inventory, position)
         {:noreply, inventory}
       :error ->
