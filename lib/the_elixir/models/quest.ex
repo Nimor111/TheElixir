@@ -3,7 +3,7 @@ defmodule TheElixir.Models.Quest do
   Module for the quests in the game
   """
   
-  alias TheElixir.Models.Quest, as: Quest
+  alias TheElixir.Models.Quest
 
   defstruct [:name, :description, :rewards, :status, :tasks]
 

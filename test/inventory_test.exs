@@ -32,7 +32,7 @@ defmodule TheElixirInventoryTest do
 
     Inventory.stop(inventory)
     :timer.sleep(2)
-    # this is retarded
+    # restarted with default value, not so good
     assert Inventory.lookup(:inventory, "head") == :error
   end
 end

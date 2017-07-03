@@ -3,7 +3,7 @@ defmodule TheElixir.Models.Room do
   A model for the game's rooms
   """
 
-  alias TheElixir.Models.Room, as: Room
+  alias TheElixir.Models.Room
   
   defstruct [:name, :quests]
   

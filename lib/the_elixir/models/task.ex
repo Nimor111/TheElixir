@@ -3,7 +3,7 @@ defmodule TheElixir.Models.Task do
   Model to represent a task in the game
   """
 
-  alias TheElixir.Models.Task, as: Task
+  alias TheElixir.Models.Task
   
   defstruct [:title, :description, :goal, :status, :completed_questions]
 
