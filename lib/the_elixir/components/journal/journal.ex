@@ -55,9 +55,9 @@ defmodule TheElixir.Components.Journal do
   def handle_cast({:delete, quest_name}, journal) do
     case lookup(journal, quest_name) do
       {:ok, quest} ->
+        :ets.delete(journal, quest_name)
         {:noreply, journal} 
       :error ->
-        :ets.delete(journal, quest_name)
         {:noreply, journal}
     end
   end

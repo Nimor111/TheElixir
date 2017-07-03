@@ -70,8 +70,13 @@ defmodule TheElixir.Components.Inventory do
   end
 
   def handle_cast({:delete, position}, inventory) do
-    :ets.delete(inventory, position)
-    {:noreply, inventory}
+    case lookup(inventory, position) do
+      {:ok, item} ->
+        :ets.delete(inventory, position)
+        {:noreply, inventory}
+      :error ->
+        {:noreply, inventory}
+    end
   end
 
   def handle_info(_msg, state) do
