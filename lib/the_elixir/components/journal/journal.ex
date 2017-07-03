@@ -43,6 +43,13 @@ defmodule TheElixir.Components.Journal do
     GenServer.call(journal, {:get, []})
   end
 
+  @doc """
+  Stop the journal process
+  """
+  def stop(journal) do
+    GenServer.stop(journal)
+  end
+
   # Server callbacks
   def init(table) do
     journal = :ets.new(table, [:named_table, read_concurrency: true])

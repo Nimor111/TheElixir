@@ -25,7 +25,7 @@ defmodule TheElixirInventoryTest do
     assert Inventory.lookup(inventory, "head") == :error
   end
 
-  test "process is restarted correctly", %{inventory: inventory} do
+  test "inventory process is restarted correctly", %{inventory: inventory} do
     Inventory.add(inventory, "head", "helm of might")
 
     assert {:ok, _} = Inventory.lookup(inventory, "head")

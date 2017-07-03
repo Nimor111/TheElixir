@@ -46,6 +46,13 @@ defmodule TheElixir.Components.World do
     GenServer.call(world, {:get, []})
   end
 
+  @doc """
+  Stop the world process
+  """
+  def stop(world) do
+    GenServer.stop(world)
+  end
+
   # Server callbacks
   
   def init(table) do
