@@ -60,7 +60,8 @@ defmodule TheElixir.Components.Journal do
   end
 
   def handle_call({:get, []}, _from, journal) do
-    quest_names = :ets.match(journal, {:"$1", :_}) |> List.flatten
+    quest_names = :ets.match(journal, {:"$1", :_})
+                  |> List.flatten
     {:reply, quest_names, journal}
   end
 
