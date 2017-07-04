@@ -17,4 +17,11 @@ defmodule TheElixir.Models.Player do
   def new(name, history \\ "", title \\ "the newb", progress \\ 0) do
     %Player{name: name, history: history, title: title, progress: progress}
   end
+  
+  @doc """
+  Completes a room for a `player`, a.k.a adds 1 to his/her progress
+  """
+  def add_progress(player) do
+    Player.new(player.name, player.history, player.title, player.progress + 1)
+  end
 end
