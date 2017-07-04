@@ -10,6 +10,7 @@ defmodule TheElixir.Logic.Trigger do
   alias TheElixir.Components.Journal 
   alias TheElixir.Models.Question
   alias TheElixir.Components.World
+  alias TheElixir.Models.Task
   
   @doc """
   Add a quest with `quest_name` to the
@@ -31,6 +32,7 @@ defmodule TheElixir.Logic.Trigger do
         {:ok, Task.new(task.title,
                        task.description,
                        task.goal - 1,
+                       task.questions,
                        task.completed_questions + 1)}
         _ -> {:error, "Wrong answer!"}
     end

@@ -2,6 +2,10 @@ defmodule TheElixir.Lobby do
   @moduledoc """
   Main lobby for the game
   """
+  
+  alias TheElixir.Logic.NewGame
+  alias TheElixir.Lobby
+
   def print_main_menu do
     """
     1. New game
@@ -9,10 +13,12 @@ defmodule TheElixir.Lobby do
     3. Exit
     """
   end
-  
+
   def new_game do
-    name = IO.gets("Enter your name: ") |> String.strip
-    "You started a new game, #{name} the brave!"
+    name = NewGame.enter_name
+    history = NewGame.enter_history
+    player = NewGame.new_player(name, history)
+    Lobby.loop
   end
 
   def continue do
@@ -25,15 +31,15 @@ defmodule TheElixir.Lobby do
   end
 
   def loop do
-    IO.puts(TheElixir.Lobby.print_main_menu)
+    IO.puts(Lobby.print_main_menu)
     choice = IO.gets("Which do you pick, adventurer? ")
     choice = Integer.parse(choice) |> elem(0)
     case choice do
-      1 -> IO.puts(TheElixir.Lobby.new_game)
-      2 -> IO.puts(TheElixir.Lobby.continue)
-      3 -> TheElixir.Lobby.exit
+      1 -> Lobby.new_game
+      2 -> IO.puts(Lobby.continue)
+      3 -> Lobby.exit
       _   -> IO.puts("Try again!")
-             TheElixir.Lobby.loop 
+             Lobby.loop 
     end
   end
 end
