@@ -5,7 +5,7 @@ defmodule TheElixir.Models.Task do
 
   alias TheElixir.Models.Task
   
-  defstruct [:title, :description, :goal, :status, :completed_questions]
+  defstruct [:title, :description, :goal, :status, :completed_questions, :questions]
 
   @doc """
   Create a Task instance
@@ -13,9 +13,11 @@ defmodule TheElixir.Models.Task do
   `description` : The description of the task
   `goal` : How many questions must be answered correctly before task can be completed
   """
-  def new(title, description, goal) do
+  def new(title, description, goal, questions \\ [],
+          completed_questions \\ 0) do
     %Task{title: title, description: description, goal: goal,
-          status: :active, completed_questions: 0}
+          status: :active, completed_questions: 0,
+          questions: questions}
   end
   
   @doc """
