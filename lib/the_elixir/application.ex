@@ -3,8 +3,9 @@ defmodule TheElixir.Application do
 
   use Application
 
+  alias TheElixir.Lobby
+
   def start(_type, _args) do
     TheElixir.Supervisor.start_link
-    TheElixir.Lobby.loop
   end
 end

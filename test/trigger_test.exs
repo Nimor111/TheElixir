@@ -5,8 +5,6 @@ defmodule TheElixirTriggerTest do
   alias TheElixir.Models.Room
   alias TheElixir.Components.Journal
   alias TheElixir.Models.Task
-  alias TheElixir.Models.Question
-  alias TheElixir.Components.World
   alias TheElixir.Logic.Trigger
 
   setup context do
