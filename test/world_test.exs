@@ -7,7 +7,7 @@ defmodule TheElixirWorldTest do
 
   setup context do
     {:ok, _} = World.start_link(context.test)
-    room = %Room{name: "Beginning", quests: [%Quest{}]}
+    room = %Room{name: "Beginning", quests: %{"First quest": %Quest{}}}
     {:ok, world: context.test, room: room}
   end
 

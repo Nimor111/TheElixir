@@ -9,9 +9,9 @@ defmodule TheElixir.Models.Task do
 
   @doc """
   Create a Task instance
-  title : The name of the task
-  description : The description of the task
-  goal : How many questions must be answered correctly before task can be completed
+  `title` : The name of the task
+  `description` : The description of the task
+  `goal` : How many questions must be answered correctly before task can be completed
   """
   def new(title, description, goal) do
     %Task{title: title, description: description, goal: goal,

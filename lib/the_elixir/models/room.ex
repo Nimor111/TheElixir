@@ -12,11 +12,11 @@ defmodule TheElixir.Models.Room do
   `name` : name of the room
   `quests` : the quests to be completed in the room to exit
   """
-  def new(name, quests \\ []) do
+  def new(name, quests \\ %{}) do
     %Room{name: name, quests: quests}
   end
 
-  def add_quest(room, quest) do
-    [quest | room.quests]
+  def add_quest(room, quest_name, quest) do
+    Map.put(room.quests, quest_name, quest)
   end
 end
