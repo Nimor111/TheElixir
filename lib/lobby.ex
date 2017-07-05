@@ -3,11 +3,12 @@ defmodule TheElixir.Lobby do
   Main lobby for the game
   """
   
-  alias TheElixir.Logic.NewGame alias TheElixir.Lobby
+  alias TheElixir.Logic.NewGame
+  alias TheElixir.Lobby
   alias TheElixir.Logic.Game
 
   def print_main_menu do
-    """
+    """ 
     1. New game
     2. Continue
     3. Exit
@@ -15,6 +16,7 @@ defmodule TheElixir.Lobby do
   end
 
   def new_game do
+    NewGame.init_world
     name = NewGame.enter_name
     history = NewGame.enter_history
     player = NewGame.new_player(name, history)
@@ -41,5 +43,10 @@ defmodule TheElixir.Lobby do
       _   -> IO.puts("Try again!")
              Lobby.loop 
     end
+  end
+
+  def clear_screen do
+    :timer.sleep(2000)
+    System.cmd "clear", [], into: IO.stream(:stdio, :line)
   end
 end

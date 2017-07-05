@@ -10,6 +10,18 @@ defmodule TheElixir.Logic.NewGame do
 
   alias TheElixir.Components.World
   alias TheElixir.Models.Player
+  alias TheElixir.Models.Room
+  alias TheElixir.Models.Quest
+  
+  @doc """
+  Inits the world with rooms, one for now
+  TODO add more rooms
+  """
+  def init_world do
+    quest = %Quest{name: "Operators", description: "Learn basic operators!"}
+    room = Room.new(name: "Introduction", quests: %{"Operators" => quest})
+    World.add(:world, room.name, room)
+  end
   
   @doc """
   Prompts the user to enter a name for his character
