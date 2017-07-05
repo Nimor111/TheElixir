@@ -4,6 +4,7 @@ defmodule TheElixir.Lobby do
   """
   
   alias TheElixir.Logic.NewGame alias TheElixir.Lobby
+  alias TheElixir.Logic.Game
 
   def print_main_menu do
     """
@@ -17,7 +18,7 @@ defmodule TheElixir.Lobby do
     name = NewGame.enter_name
     history = NewGame.enter_history
     player = NewGame.new_player(name, history)
-    Lobby.loop
+    Game.game_introduction(player)
   end
 
   def continue do
