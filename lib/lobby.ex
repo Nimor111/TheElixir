@@ -3,8 +3,7 @@ defmodule TheElixir.Lobby do
   Main lobby for the game
   """
   
-  alias TheElixir.Logic.NewGame
-  alias TheElixir.Lobby
+  alias TheElixir.Logic.NewGame alias TheElixir.Lobby
 
   def print_main_menu do
     """

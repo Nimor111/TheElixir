@@ -51,4 +51,11 @@ defmodule TheElixir.Logic.Trigger do
   def exit_room_trigger(world, room_name) do
     World.delete(world, room_name)
   end
+
+  @doc """
+  Enter room with `room_name`, a.k.a add it to `world`
+  """
+  def enter_room_trigger(world, room_name, room) do
+    World.add(world, room_name, room)
+  end
 end
