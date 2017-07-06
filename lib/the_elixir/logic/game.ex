@@ -3,13 +3,11 @@ defmodule TheElixir.Logic.Game do
   Module to handle the main menus and text of the game
   """
   
-  alias TheElixir.Logic.NewGame
   alias TheElixir.Logic.Game
   alias TheElixir.Lobby
   alias TheElixir.Components.World
   alias TheElixir.Components.Inventory
   alias TheElixir.Components.Journal
-  alias TheElixir.Logic.Trigger
   alias TheElixir.Logic.RoomGame
 
   def command_help(player) do
@@ -117,9 +115,9 @@ defmodule TheElixir.Logic.Game do
     Game.get_input(player)
   end
 
-  def room(rooms, player) when rooms == [], do: "There is no room nearby!"
+  def room(rooms, _) when rooms == [], do: "There is no room nearby!"
   def room(rooms, player) do
-    [ room_name | rooms  ] = rooms
+    [ room_name | _  ] = rooms
     RoomGame.pick_room(player, room_name)
   end
 end

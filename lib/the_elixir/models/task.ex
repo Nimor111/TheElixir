@@ -15,7 +15,7 @@ defmodule TheElixir.Models.Task do
   def new(title, description, goal, questions \\ [],
           completed_questions \\ 0) do
     %Task{title: title, description: description, goal: goal,
-          status: :active, completed_questions: 0,
+          status: :active, completed_questions: completed_questions,
           questions: questions}
   end
   
