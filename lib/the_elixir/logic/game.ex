@@ -10,6 +10,7 @@ defmodule TheElixir.Logic.Game do
   alias TheElixir.Components.Inventory
   alias TheElixir.Components.Journal
   alias TheElixir.Logic.Trigger
+  alias TheElixir.Logic.RoomGame
 
   def command_help(player) do
     IO.puts([
@@ -118,6 +119,7 @@ defmodule TheElixir.Logic.Game do
 
   def room(rooms, player) when rooms == [], do: "There is no room nearby!"
   def room(rooms, player) do
+    [ room_name | rooms  ] = rooms
     RoomGame.pick_room(player, room_name)
   end
 end
