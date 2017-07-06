@@ -7,6 +7,7 @@ defmodule TheElixir.Logic.Game do
   alias TheElixir.Logic.Game
   alias TheElixir.Lobby
   alias TheElixir.Components.World
+  alias TheElixir.Components.Inventory
   alias TheElixir.Logic.Trigger
 
   def command_help do
@@ -21,14 +22,25 @@ defmodule TheElixir.Logic.Game do
     ]
   end
 
-  def get_input do
-    input = IO.gets("(press h for help) >> ")
+  def get_input(player) do
+    input = IO.gets("(press h for help) >> ") |> String.strip
+    player |> Game.match_input(input)
   end
 
-  def match_input(input) do
-    """
-    TODO
-    """
+  def match_input(player, input) do
+    rooms = World.get(:world)
+    case input do
+      "m" -> Game.move(player)
+      "i" -> Game.inspect(player)
+      "w" -> Game.room(rooms, player)
+      "e" -> Lobby.exit
+      "inv" -> IO.puts(Inventory.get(:inventory))
+        Game.get_input(player)
+      "world" -> IO.puts(World.get(:world))
+        Game.get_input(player)
+      "j" -> IO.puts(Journal.get(:journal))
+        Game.get_input(player)
+    end 
   end
  
   def game_introduction(player) do
