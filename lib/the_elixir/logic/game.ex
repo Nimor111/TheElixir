@@ -8,18 +8,20 @@ defmodule TheElixir.Logic.Game do
   alias TheElixir.Lobby
   alias TheElixir.Components.World
   alias TheElixir.Components.Inventory
+  alias TheElixir.Components.Journal
   alias TheElixir.Logic.Trigger
 
-  def command_help do
-    [
-      "m -> move forward",
-      "i -> inspect surroundings",
-      "w -> enter nearest room",
-      "e -> exit / quit",
-      "inv -> view inventory",
-      "world -> view all rooms in the world",
-      "j -> view journal"
-    ]
+  def command_help(player) do
+    IO.puts([
+      "m -> move forward\n",
+      "i -> inspect surroundings\n",
+      "w -> enter nearest room\n",
+      "e -> exit / quit\n",
+      "inv -> view inventory\n",
+      "world -> view all rooms in the world\n",
+      "j -> view journal\n"
+    ])
+    Game.get_input(player)
   end
 
   def get_input(player) do
@@ -40,6 +42,8 @@ defmodule TheElixir.Logic.Game do
         Game.get_input(player)
       "j" -> IO.puts(Journal.get(:journal))
         Game.get_input(player)
+      "h" -> Game.command_help(player)
+       _  -> Game.get_input(player)
     end 
   end
  
@@ -64,48 +68,23 @@ defmodule TheElixir.Logic.Game do
       "to know more. There is a door to your right. What do you do?\n",
       "|>|>|>|>|>|>|>|>|>|>|>|>"
     ])
-    Game.hallway_options(player)
+    Game.get_input(player)
   end
 
-  def hallway_options(player) do
-    Lobby.clear_screen
-    IO.puts([
-      "1. Move forward.\n",
-      "2. Inspect your surroundings.\n",
-      "3. Look at the door.\n",
-      "4. Give up ( would you ever do that? )",
-    ])
-    choice = Integer.parse(IO.gets("Enter your choice: ")) |> elem(0)
-    player |> Game.choose_hallway_option(choice)
-  end
-
-  def choose_hallway_option(player, choice) do
-    rooms = World.get(:world)
-    case choice do 
-      1 -> Game.move(player) 
-      2 -> Game.inspect(player)
-      3 -> {room_name, room} = Game.room(rooms, player)
-        Trigger.enter_room_trigger(:world, room_name, room)
-        IO.puts("You entered the room!")
-      4 -> Lobby.exit
-      _ -> IO.puts("Choose from the avaliable choices, adventurer.")
-        Game.hallway_options(player)
-    end
-  end
-  
   def move(player) do
     IO.puts("You moved forward.")
-    Game.hallway_options(player)
+    Game.get_input(player)
   end
 
   def inspect(player) do
     IO.puts("There is a door next to you. Maybe it leads somewhere?")
-    Game.hallway_options(player)
+    Game.get_input(player)
   end
 
-  def room(rooms, player) when rooms == [], do: {"", nil}
+  def room(rooms, player) when rooms == [], do: "There is no room nearby!"
   def room(rooms, player) do
     [ room_name | rooms ] = rooms
     {room_name, World.lookup(:world, room_name)}
+    # RoomGame.pick_room(player, room_name)
   end
 end
