@@ -5,6 +5,8 @@ defmodule TheElixir.Logic.RoomGame do
   
   alias TheElixir.Logic.RoomGame 
   alias TheElixir.Components.World
+  alias TheElixir.Components.Journal
+  alias TheElixir.Logic.Game
 
   def pick_room(player, room_name) do
     # TODO add progress logic
@@ -21,7 +23,7 @@ defmodule TheElixir.Logic.RoomGame do
       you stepped in! We got you, didn't we? Now, look around and start solving tasks!
       """)
     {:ok, room} = World.lookup(:world, room_name)
-    RoomGame.get_input(player, room)
+    player |> RoomGame.get_input(room)
   end
 
   def get_input(player, room) do
@@ -32,13 +34,31 @@ defmodule TheElixir.Logic.RoomGame do
   def match_input(player, input, room) do
     case input do
       "q" -> 
-        Enum.each room.quests, fn {_, v} -> IO.puts "#{v}" end
-        player |> RoomGame.get_input(room)
+        player |> RoomGame.show_quests(room)
+      "add" ->
+        player |> RoomGame.add_quest(room)
+      "j" ->
+        Game.get_journal(player)
       _ ->
         IO.puts "We don't know this command ( yet ). Read the prompt!"
         player |> RoomGame.get_input(room)
     end 
   end
 
+  def show_quests(player, room) do
+    Enum.each room.quests, fn {_, v} -> IO.puts "#{v}" end
+    player |> RoomGame.get_input(room)
+  end
 
+  def add_quest(player, room) do
+    quest_name = IO.gets("(Which quest would you like to begin?) >> ") |> String.strip
+    case Map.fetch(room.quests, quest_name) do
+      {:ok, quest} ->
+        Journal.add(:journal, quest_name, quest)
+        player |> RoomGame.get_input(room)
+      :error ->
+        IO.puts "No such quest in this room!"
+        player |> RoomGame.add_quest(room)
+    end
+  end
 end
