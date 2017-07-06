@@ -34,3 +34,9 @@ defmodule TheElixir.Models.Quest do
            tasks: quest.tasks, status: :completed}
   end
 end
+
+defimpl String.Chars, for: TheElixir.Models.Quest do
+  def to_string(quest) do
+   quest.name
+  end
+end

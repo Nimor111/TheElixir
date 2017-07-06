@@ -7,7 +7,7 @@ defmodule TheElixir.Models.Room do
   
   defstruct [:name, :quests]
   
-  @doc """
+  @doc """ 
   Create a new room.
   `name` : name of the room
   `quests` : the quests to be completed in the room to exit
@@ -29,5 +29,11 @@ defmodule TheElixir.Models.Room do
 
   def exit?(room) do
     room.quests == []
+  end
+end
+
+defimpl String.Chars, for: TheElixir.Models.Room do
+  def to_string(room) do
+    room.name
   end
 end

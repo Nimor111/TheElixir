@@ -20,7 +20,7 @@ defmodule TheElixir.Logic.NewGame do
   def init_world do
     quest = %Quest{name: "Operators", description: "Learn basic operators!"}
     room = Room.new(name: "Introduction", quests: %{"Operators" => quest})
-    World.add(:world, room.name, room)
+    World.add(:world, "Introduction", room)
   end
   
   @doc """

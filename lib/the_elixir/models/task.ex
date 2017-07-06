@@ -3,8 +3,7 @@ defmodule TheElixir.Models.Task do
   Model to represent a task in the game
   """
 
-  alias TheElixir.Models.Task
-  
+  alias TheElixir.Models.Task 
   defstruct [:title, :description, :goal, :status, :completed_questions, :questions]
 
   @doc """
@@ -36,7 +35,7 @@ defmodule TheElixir.Models.Task do
   end
 
   @doc """
-  Check how many question `tasks` has left
+  Check how many question `task` has left
   """
   def questions_left(task) do
     case task.status do
@@ -44,4 +43,11 @@ defmodule TheElixir.Models.Task do
       :completed -> 0
     end
   end
+end
+
+
+defimpl String.Chars, for: TheElixir.Models.Task do
+  def to_string(task) do
+    task.title
+  end 
 end

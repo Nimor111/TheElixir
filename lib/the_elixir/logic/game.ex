@@ -19,7 +19,8 @@ defmodule TheElixir.Logic.Game do
       "e -> exit / quit\n",
       "inv -> view inventory\n",
       "world -> view all rooms in the world\n",
-      "j -> view journal\n"
+      "j -> view journal\n",
+      "c -> clear screen\n"
     ])
     Game.get_input(player)
   end
@@ -36,15 +37,47 @@ defmodule TheElixir.Logic.Game do
       "i" -> Game.inspect(player)
       "w" -> Game.room(rooms, player)
       "e" -> Lobby.exit
-      "inv" -> IO.puts(Inventory.get(:inventory))
-        Game.get_input(player)
-      "world" -> IO.puts(World.get(:world))
-        Game.get_input(player)
-      "j" -> IO.puts(Journal.get(:journal))
-        Game.get_input(player)
+      "inv" -> Game.get_inventory(player)
+      "world" -> Game.get_rooms(player)
+      "j" -> Game.get_journal(player)
       "h" -> Game.command_help(player)
+      "c" -> Game.clear_screen(player)
        _  -> Game.get_input(player)
     end 
+  end
+
+  def clear_screen(player) do
+    IO.puts("Clearing screen...")
+    :timer.sleep(2000)
+    System.cmd "clear", [], into: IO.stream(:stdio, :line)
+    Game.get_input(player)
+  end
+
+  def get_journal(player) do
+    quests = Journal.get(:journal)
+    case quests do
+      [] -> IO.puts("No entries yet.")
+      _  -> IO.puts(quests)
+    end
+    Game.get_input(player)
+  end
+
+  def get_inventory(player) do
+    items = Inventory.get(:inventory)
+    case items do
+      [] -> IO.puts("No items yet.")
+      _  -> IO.puts(items)
+    end
+    Game.get_input(player)
+  end
+
+  def get_rooms(player) do
+    rooms = World.get(:world)
+    case rooms do
+      [] -> IO.puts("No rooms yet.")
+      _  -> Enum.each rooms, &IO.puts(&1)
+    end
+    Game.get_input(player)
   end
  
   def game_introduction(player) do
