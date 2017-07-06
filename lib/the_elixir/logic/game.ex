@@ -42,13 +42,14 @@ defmodule TheElixir.Logic.Game do
       "j" -> Game.get_journal(player)
       "h" -> Game.command_help(player)
       "c" -> Game.clear_screen(player)
-       _  -> Game.get_input(player)
+       _  -> IO.puts "We don't know this command ( yet ). Read the prompt!"
+        Game.get_input(player)
     end 
   end
 
   def clear_screen(player) do
     IO.puts("Clearing screen...")
-    :timer.sleep(2000)
+    :timer.sleep(1000)
     System.cmd "clear", [], into: IO.stream(:stdio, :line)
     Game.get_input(player)
   end
@@ -75,7 +76,8 @@ defmodule TheElixir.Logic.Game do
     rooms = World.get(:world)
     case rooms do
       [] -> IO.puts("No rooms yet.")
-      _  -> Enum.each rooms, &IO.puts(&1)
+      _  -> IO.puts("Rooms: \n")
+        Enum.each rooms, &IO.puts(&1 <> "\n")
     end
     Game.get_input(player)
   end
@@ -116,8 +118,6 @@ defmodule TheElixir.Logic.Game do
 
   def room(rooms, player) when rooms == [], do: "There is no room nearby!"
   def room(rooms, player) do
-    [ room_name | rooms ] = rooms
-    {room_name, World.lookup(:world, room_name)}
-    # RoomGame.pick_room(player, room_name)
+    RoomGame.pick_room(player, room_name)
   end
 end
