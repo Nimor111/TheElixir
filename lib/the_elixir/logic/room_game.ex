@@ -7,6 +7,7 @@ defmodule TheElixir.Logic.RoomGame do
   alias TheElixir.Components.World
   alias TheElixir.Components.Journal
   alias TheElixir.Components.Inventory
+  alias TheElixir.Models.Room
   alias TheElixir.Logic.Game
   alias TheElixir.Lobby
 
@@ -113,7 +114,7 @@ defmodule TheElixir.Logic.RoomGame do
       "h" ->
         player |> RoomGame.command_help(room)
       "e" ->
-        Lobby.exit
+        player |> RoomGame.exit(room)
       "c" ->
         player |> RoomGame.clear_screen(room) 
       "inv" ->
@@ -145,5 +146,30 @@ defmodule TheElixir.Logic.RoomGame do
         IO.puts "No such quest in this room!"
         player |> RoomGame.add_quest(room)
     end
+  end
+
+  @doc """
+  Checks if `player` can exit `room`
+  If there are no more quests to complete, returns to hallway
+  If not, returns to room prompt
+  """
+  def exit(player, room) do
+    case Room.exit?(room) do 
+      True ->
+        IO.puts("The way is clear. Returning to hall...")
+        Game.hallway_introduction(player)
+      _    -> 
+        IO.puts("Can't exit yet, complete all quests!")
+        player |> RoomGame.get_input(room)
+    end
+  end
+
+  @doc """
+  Start solving a `quest`
+  """
+  def solve(player, room, quest) do
+    """
+    TODO
+    """
   end
 end

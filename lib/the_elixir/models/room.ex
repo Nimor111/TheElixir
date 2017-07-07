@@ -23,12 +23,18 @@ defmodule TheElixir.Models.Room do
     %Room{name: room.name, quests: Map.put(room.quests, quest_name, quest)}
   end
 
+  @doc """
+  Completes given quest with `quest_name`
+  """
   def complete_quest(room, quest_name) do
     %Room{name: room.name, quests: Map.pop(room.quests, quest_name) |> elem(1)}
   end
 
+  @doc """
+  Checks if `room` can be exited
+  """
   def exit?(room) do
-    room.quests == []
+    room.quests == %{}
   end
 end
 
