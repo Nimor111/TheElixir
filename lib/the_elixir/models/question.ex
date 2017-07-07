@@ -24,7 +24,7 @@ defmodule TheElixir.Models.Question do
   def show(question) do
     IO.puts(question.description)
     IO.puts("Answers ( pick one ): ")
-    Enum.each question.choices, fn {k, v} -> IO.puts "#{k} -> #{v}\n" end
+    Enum.each question.choices, fn {k, v} -> IO.puts "#{k} -> #{v}" end
   end
 end
 
