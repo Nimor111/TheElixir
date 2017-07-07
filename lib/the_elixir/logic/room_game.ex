@@ -10,11 +10,19 @@ defmodule TheElixir.Logic.RoomGame do
   alias TheElixir.Logic.Game
   alias TheElixir.Lobby
 
+  @doc """
+  Pick a room to enter, according to player progress
+  Note, this is a TODO feature, for now it picks the only room
+  """
   def pick_room(player, room_name) do
     # TODO add progress logic
     player |> RoomGame.enter(room_name)
   end
 
+  @doc """
+  Text that appears on entering the room, another TODO is 
+  add different intros for different rooms
+  """
   def enter(player, room_name) do
     # TODO add different room intros, take from some text file maybe
     IO.puts(
@@ -28,6 +36,10 @@ defmodule TheElixir.Logic.RoomGame do
     player |> RoomGame.get_input(room)
   end
 
+  @doc """
+  All commands the `player` can execute in the `room`
+  On key press `h`
+  """
   def command_help(player, room) do
     IO.puts([
       "m -> move forward\n",
@@ -43,6 +55,9 @@ defmodule TheElixir.Logic.RoomGame do
     player |> RoomGame.get_input(room)
   end
 
+  @doc """
+  Same as get journal in Game, TODO refactor, be DRY
+  """
   def get_journal(player, room) do
     quests = Journal.get(:journal)
     case quests do
@@ -52,11 +67,18 @@ defmodule TheElixir.Logic.RoomGame do
     player |> RoomGame.get_input(room)
   end
 
+  @doc """
+  Same as get input in Game, get player input, send it to match
+  """
   def get_input(player, room) do
     input = IO.gets("(press h for help) >> ") |> String.strip
     player |> RoomGame.match_input(input, room)
   end
 
+  @doc """
+  Clear the screen
+  On key press `c`
+  """
   def clear_screen(player, room) do
     IO.puts("Clearing screen...")
     :timer.sleep(1000)
@@ -64,6 +86,10 @@ defmodule TheElixir.Logic.RoomGame do
     player |> RoomGame.get_input(room)
   end
   
+  @doc """
+  Get inventory of `player`
+  On key press `inv`
+  """
   def get_inventory(player, room) do
     items = Inventory.get(:inventory)
     case items do
@@ -73,6 +99,9 @@ defmodule TheElixir.Logic.RoomGame do
     player |> RoomGame.get_input(room)
   end
 
+  @doc """
+  Get input of player and match it with correct function or try again
+  """
   def match_input(player, input, room) do
     case input do
       "q" -> 
@@ -95,11 +124,17 @@ defmodule TheElixir.Logic.RoomGame do
     end 
   end
 
+  @doc """
+  Show the quests in the room, akin to looking around it
+  """
   def show_quests(player, room) do
     Enum.each room.quests, fn {_, v} -> IO.puts "#{v}" end
     player |> RoomGame.get_input(room)
   end
 
+  @doc """
+  Start a quest, akin to picking it up and starting it
+  """
   def add_quest(player, room) do
     quest_name = IO.gets("(Which quest would you like to begin?) >> ") |> String.strip
     case Map.fetch(room.quests, quest_name) do
