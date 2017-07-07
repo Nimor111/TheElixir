@@ -16,6 +16,16 @@ defmodule TheElixir.Models.Question do
   def new(description \\ "", choices \\ %{}, answer \\ nil) do
     %Question{description: description, choices: choices, answer: answer}
   end
+
+  def correct?(question, answer) do
+    question.answer == answer
+  end
+
+  def show(question) do
+    IO.puts(question.description)
+    IO.puts("Answers ( pick one ): ")
+    Enum.each question.choices, fn {k, v} -> IO.puts "#{k} -> #{v}\n" end
+  end
 end
 
 defimpl String.Chars, for: TheElixir.Models.Question do

@@ -7,6 +7,7 @@ defmodule TheElixir.Logic.Trigger do
   3. When an answer to a question is given
   4. When tutorials / codex entries are encountered
   """ 
+
   alias TheElixir.Components.Journal 
   alias TheElixir.Models.Question
   alias TheElixir.Components.World
@@ -26,15 +27,15 @@ defmodule TheElixir.Logic.Trigger do
   Returns {:ok, task} on succesful answer, :error otherwise
   """
   def answer_trigger(task, question, answer) do
-    correct_answer = question.answer
-    case answer do
-      correct_answer ->
+    case question |> Question.correct?(answer) do
+      true ->
         {:ok, Task.new(task.title,
                        task.description,
-                       task.goal - 1,
+                       task.goal,
                        task.questions,
                        task.completed_questions + 1)}
-        _ -> {:error, "Wrong answer!"}
+      false ->
+        {:error, "Wrong answer!"}
     end
   end
   
