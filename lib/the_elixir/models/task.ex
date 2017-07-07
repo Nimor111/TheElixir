@@ -31,7 +31,8 @@ defmodule TheElixir.Models.Task do
   """
   def complete(task) do
     %Task{title: task.title, description: task.description, goal: task.goal,
-          status: :completed, completed_questions: task.completed_questions} 
+      questions: task.questions, status: :completed,
+      completed_questions: task.completed_questions} 
   end
 
   @doc """

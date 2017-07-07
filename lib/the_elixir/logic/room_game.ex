@@ -7,7 +7,11 @@ defmodule TheElixir.Logic.RoomGame do
   alias TheElixir.Components.World
   alias TheElixir.Components.Journal
   alias TheElixir.Components.Inventory
+  alias TheElixir.Logic.Trigger
   alias TheElixir.Models.Room
+  alias TheElixir.Models.Quest
+  alias TheElixir.Models.Task
+  alias TheElixir.Models.Question
   alias TheElixir.Logic.Game
   alias TheElixir.Lobby
 
@@ -141,6 +145,7 @@ defmodule TheElixir.Logic.RoomGame do
     case Map.fetch(room.quests, quest_name) do
       {:ok, quest} ->
         Journal.add(:journal, quest_name, quest)
+        IO.puts("Quest added to journal!")
         player |> RoomGame.get_input(room)
       :error ->
         IO.puts "No such quest in this room!"
@@ -168,8 +173,48 @@ defmodule TheElixir.Logic.RoomGame do
   Start solving a `quest`
   """
   def solve(player, room, quest) do
-    """
-    TODO
-    """
+    IO.puts("You started solving #{quest.name}")
+    case Quest.completed?(quest) do
+      true -> IO.puts("Quest done!")
+        quest = Quest.complete_quest(quest) 
+        player |> RoomGame.get_input(room)
+      false  -> 
+        tasks = quest.tasks
+        [ task | tasks ] = tasks
+        player |> RoomGame.solve_task(room, task)
+        quest = quest |> Quest.remove_task(task)
+        player |> RoomGame.solve(room, quest)
+    end
+  end
+
+  @doc """
+  Gets an answer to `question` of `task`
+  and checks it with the trigger
+  """
+  def check_answer(player, question, task) do
+    Question.show(question)
+    answer = IO.gets("(And the answer is...) >> ")
+    result = task |> Trigger.answer_trigger(question, answer)
+    case result do
+      {:ok, task} ->
+        IO.puts("Correct answer!")
+      {:error, _} ->
+        player |> RoomGame.check_answer(question, task)
+    end
+  end
+  
+  @doc """
+  Solve a `task`
+  """
+  def solve_task(player, room, task) do
+    case Task.completed?(task) do
+      true ->
+        IO.puts("You solved the task!")
+      false ->
+        questions = task.questions
+        [ question | questions ] = questions
+        result = player |> RoomGame.check_answer(task, question)
+        player |> RoomGame.solve_task(room, task)
+    end
   end
 end

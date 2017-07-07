@@ -12,15 +12,20 @@ defmodule TheElixir.Logic.NewGame do
   alias TheElixir.Models.Player
   alias TheElixir.Models.Room
   alias TheElixir.Models.Quest
+  alias TheElixir.Models.Task
+  alias TheElixir.Models.Question
   
   @doc """
   Inits the world with rooms, one for now
   TODO add more rooms
   """
   def init_world do
-    quest = %Quest{name: "Operators", description: "Learn basic operators!"}
+    question = Question.new("Is the truth truly the truth? In elixir, true equalswhich one?",
+                            %{"1" => "true", "2" => "false"}, "1")
+    task = Task.new("Equalities", "We shall see what is truthy and what is not", 1, [question])
+    quest = Quest.new("First quest", "Our first adventure!", ["equality"], [task])
     room = Room.new("Introduction")
-    room = Room.add_quest(room, "Operators", quest)
+    room = Room.add_quest(room, "First quest", quest)
     World.add(:world, "Introduction", room)
   end
   
