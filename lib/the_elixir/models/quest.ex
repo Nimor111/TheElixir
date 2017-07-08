@@ -40,10 +40,10 @@ defmodule TheElixir.Models.Quest do
   """
   def remove_task(quest, task) do
     tasks = quest.tasks |> List.delete(task)
-    %Quest{name: quest.name,
-      description: quest.description,
-      rewards: quest.rewards,
-      tasks: tasks}
+    Quest.new(quest.name,
+              quest.description,
+              quest.rewards,
+              tasks)
   end
 end
 

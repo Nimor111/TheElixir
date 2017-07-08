@@ -20,9 +20,9 @@ defmodule TheElixir.Logic.NewGame do
   TODO add more rooms
   """
   def init_world do
-    question = Question.new("Is the truth truly the truth? In elixir, true equalswhich one?",
+    question = Question.new("Is the truth truly the truth? In elixir, true equals which one?",
                             %{"1" => "true", "2" => "false"}, "1")
-    task = Task.new("Equalities", "We shall see what is truthy and what is not", 1, [question])
+    task = Task.new("Equalities", "We shall see what is truthy and what is not.", 1, [question])
     quest = Quest.new("First quest", "Our first adventure!", ["equality"], [task])
     room = Room.new("Introduction")
     room = Room.add_quest(room, "First quest", quest)

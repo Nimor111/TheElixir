@@ -29,11 +29,7 @@ defmodule TheElixir.Logic.Trigger do
   def answer_trigger(task, question, answer) do
     case question |> Question.correct?(answer) do
       true ->
-        {:ok, Task.new(task.title,
-                       task.description,
-                       task.goal,
-                       task.questions,
-                       task.completed_questions + 1)}
+        {:ok, Task.new(task.title, task.description, task.goal, task.questions, task.completed_questions + 1)}
       false ->
         {:error, "Wrong answer!"}
     end

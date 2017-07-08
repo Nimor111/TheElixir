@@ -20,6 +20,15 @@ defmodule TheElixir.Models.Task do
   end
   
   @doc """
+  Display basic information about the task
+  """
+  def show(task) do
+    IO.puts(task.title)
+    IO.puts(task.description)
+    IO.puts("You have to complete #{task.goal} questions to finish this task.")
+  end
+  
+  @doc """
   Check if `task` has been completed
   """
   def completed?(task) do
@@ -45,7 +54,6 @@ defmodule TheElixir.Models.Task do
     end
   end
 end
-
 
 defimpl String.Chars, for: TheElixir.Models.Task do
   def to_string(task) do

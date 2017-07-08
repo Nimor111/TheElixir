@@ -47,15 +47,14 @@ defmodule TheElixir.Logic.RoomGame do
   """
   def command_help(player, room) do
     IO.puts([
-      "m -> move forward\n",
-      "i -> inspect surroundings\n",
       "e -> exit / quit\n",
       "inv -> view inventory\n",
-      "world -> view all rooms in the world\n",
       "q -> view quests in the room\n",
       "add -> add a quest to your journal\n",
       "j -> view journal\n",
-      "c -> clear screen\n"
+      "c -> clear screen\n",
+      "s -> start solving quest\n",
+      "Here's a tip - add a quest to the journal before starting to solve it!\n"
     ])
     player |> RoomGame.get_input(room)
   end
@@ -123,6 +122,8 @@ defmodule TheElixir.Logic.RoomGame do
         player |> RoomGame.clear_screen(room) 
       "inv" ->
         player |> RoomGame.get_inventory(room)
+      "s" ->
+        player |> RoomGame.choose_quest(room)
       _ ->
         IO.puts "We don't know this command ( yet ). Read the prompt!"
         player |> RoomGame.get_input(room)
@@ -160,10 +161,10 @@ defmodule TheElixir.Logic.RoomGame do
   """
   def exit(player, room) do
     case Room.exit?(room) do 
-      True ->
+      true ->
         IO.puts("The way is clear. Returning to hall...")
         Game.hallway_introduction(player)
-      _    -> 
+      _    ->
         IO.puts("Can't exit yet, complete all quests!")
         player |> RoomGame.get_input(room)
     end
@@ -176,14 +177,13 @@ defmodule TheElixir.Logic.RoomGame do
     IO.puts("You started solving #{quest.name}")
     case Quest.completed?(quest) do
       true -> IO.puts("Quest done!")
-        quest = Quest.complete_quest(quest) 
+        quest_name = quest.name
+        room = room |> Room.complete_quest(quest_name)
         player |> RoomGame.get_input(room)
       false  -> 
         tasks = quest.tasks
         [ task | tasks ] = tasks
-        player |> RoomGame.solve_task(room, task)
-        quest = quest |> Quest.remove_task(task)
-        player |> RoomGame.solve(room, quest)
+        player |> RoomGame.solve_task(room, quest, task)
     end
   end
 
@@ -191,30 +191,61 @@ defmodule TheElixir.Logic.RoomGame do
   Gets an answer to `question` of `task`
   and checks it with the trigger
   """
-  def check_answer(player, question, task) do
+  def check_answer(player, room, quest, task, question) do
     Question.show(question)
-    answer = IO.gets("(And the answer is...) >> ")
+    answer = IO.gets("(And the answer is...) >> ") |> String.strip
     result = task |> Trigger.answer_trigger(question, answer)
     case result do
       {:ok, task} ->
         IO.puts("Correct answer!")
+        tasks = quest.tasks
+        [ _ | tasks ] = tasks
+        quest = Quest.new(quest.name, quest.description, quest.rewards, tasks)
+        player |> RoomGame.solve_task(room, quest, task)
       {:error, _} ->
-        player |> RoomGame.check_answer(question, task)
+        IO.puts("Incorrect!")
+        player |> RoomGame.check_answer(room, quest, task, question)
     end
   end
-  
+
+  @doc """
+  Choose a quest from the journal to complete
+  """
+  def choose_quest(player, room) do
+    input = IO.gets("Choose a quest to complete: ( or view journal ) >> ") |> String.strip
+    case input do
+      "j" -> IO.puts(Journal.get(:journal))
+        player |> RoomGame.choose_quest(room)
+      _   -> player |> RoomGame.handle_choose_quest(room, input)
+    end
+  end
+
+  @doc """
+  Helper function for `choose_quest`
+  """
+  def handle_choose_quest(player, room, quest_name) do
+    case Journal.lookup(:journal, quest_name) do
+      {:ok, quest} ->
+        player |> RoomGame.solve(room, quest)
+      :error ->
+        IO.puts "Quest doesn't exist"
+        player |> RoomGame.choose_quest(room)
+    end
+  end
+
   @doc """
   Solve a `task`
   """
-  def solve_task(player, room, task) do
+  def solve_task(player, room, quest, task) do
     case Task.completed?(task) do
       true ->
         IO.puts("You solved the task!")
+        player |> RoomGame.solve(room, quest)
       false ->
         questions = task.questions
         [ question | questions ] = questions
-        result = player |> RoomGame.check_answer(task, question)
-        player |> RoomGame.solve_task(room, task)
+        player |> RoomGame.check_answer(room, quest, task, question)
+        player |> RoomGame.solve_task(room, quest, task)
     end
   end
 end
