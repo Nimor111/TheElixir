@@ -3,6 +3,7 @@ defmodule TheElixir.EctoModels.Quest do
   import Ecto.Changeset
 
   alias TheElixir.EctoModels.Task
+  alias TheElixir.EctoModels.Room
 
   schema "quests" do
     field :name, :string
@@ -10,6 +11,7 @@ defmodule TheElixir.EctoModels.Quest do
     field :rewards, {:array, :map}
     field :status, :string
     has_many :tasks, Task
+    belongs_to :room, Room
     timestamps()
   end
 
