@@ -1,4 +1,6 @@
 defmodule TheElixir.Components.Supervisor do
+  @moduledoc false
+
   use Supervisor
 
   alias TheElixir.Components.Inventory

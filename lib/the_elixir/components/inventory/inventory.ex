@@ -1,4 +1,7 @@
 defmodule TheElixir.Components.Inventory do
+  @moduledoc """
+  The player's inventory - stores items in the form {body part => name}
+  """
   use GenServer
 
   # Client API

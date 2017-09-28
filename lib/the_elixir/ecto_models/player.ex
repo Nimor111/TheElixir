@@ -1,4 +1,8 @@
 defmodule TheElixir.EctoModels.Player do
+  @moduledoc """
+  Model representing a Player in our game
+  """
+  
   use Ecto.Schema 
   import Ecto.Changeset
 

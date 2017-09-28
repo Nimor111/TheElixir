@@ -1,4 +1,9 @@
 defmodule TheElixir.EctoModels.Room do
+  @moduledoc """
+  Module representing a room/area in the game
+  Has quests for solving
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 

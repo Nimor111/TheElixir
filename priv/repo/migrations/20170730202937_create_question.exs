@@ -6,6 +6,7 @@ defmodule TheElixir.Repo.Migrations.CreateQuestion do
       add :description, :string
       add :choices, :map
       add :answer, :integer
+      add :task_id, references(:tasks)
       timestamps()
     end
   end

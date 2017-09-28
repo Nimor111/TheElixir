@@ -10,5 +10,6 @@ defmodule TheElixir.Repo.Migrations.CreateTask do
       add :quest_id, references(:quests)
       timestamps()
     end
-  end
+
+    end
 end
