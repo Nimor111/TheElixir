@@ -1,4 +1,6 @@
 defmodule Mix.Tasks.Play do
+  @moduledoc false
+
   use Mix.Task
 
   alias TheElixir.Lobby
@@ -6,8 +8,8 @@ defmodule Mix.Tasks.Play do
   @doc """
   Run the main game function
   """
-  def run(_) do
-    Application.start(:the_elixir)
+  def run(_args) do
+    Application.ensure_all_started(:the_elixir)
     Lobby.loop
   end
 end
