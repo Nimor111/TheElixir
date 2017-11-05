@@ -85,7 +85,7 @@ defmodule TheElixir.Logic.RoomGame do
   """
   def clear_screen(player, room) do
     IO.puts("Clearing screen...")
-    :timer.sleep(1000)
+    Process.sleep(1000)
     System.cmd "clear", [], into: IO.stream(:stdio, :line)
     player |> RoomGame.get_input(room)
   end
