@@ -33,16 +33,16 @@ defmodule TheElixir.Logic.NewGame do
   Prompts the user to enter a name for his character
   """ 
   def enter_name do
-    name = IO.gets("Enter your name, brave Elixir adventurer: ") |> String.strip
-    name
+    name = IO.gets("Enter your name, brave Elixir adventurer: ")
+    String.strip(name)
   end
   
   @doc """
   Prompts the user to enter a history for his character
   """ 
   def enter_history do
-    history = IO.gets("Tell us a bit about yourself, adventurer: ") |> String.strip
-    history
+    history = IO.gets("Tell us a bit about yourself, adventurer: ")
+    String.strip(history)
   end
 
   @doc """

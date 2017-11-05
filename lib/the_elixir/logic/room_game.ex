@@ -18,18 +18,18 @@ defmodule TheElixir.Logic.RoomGame do
   @doc """
   Pick a room to enter, according to player progress
   Note, this is a TODO feature, for now it picks the only room
+  TODO add progress logic
   """
   def pick_room(player, room_name) do
-    # TODO add progress logic
     player |> RoomGame.enter(room_name)
   end
 
   @doc """
-  Text that appears on entering the room, another TODO is 
-  add different intros for different rooms
+  Text that appears on entering the room
+  TODO add different intros for different rooms
+  TODO add different room intros, take from some text file maybe
   """
   def enter(player, room_name) do
-    # TODO add different room intros, take from some text file maybe
     IO.puts(
       """
       Welcome to the #{room_name} room! This is the first room that you are going to
@@ -75,8 +75,8 @@ defmodule TheElixir.Logic.RoomGame do
   Same as get input in Game, get player input, send it to match
   """
   def get_input(player, room) do
-    input = IO.gets("(press h for help) >> ") |> String.strip
-    player |> RoomGame.match_input(input, room)
+    input = IO.gets("(press h for help) >> ")
+    player |> RoomGame.match_input(String.strip(input), room)
   end
 
   @doc """
@@ -142,7 +142,8 @@ defmodule TheElixir.Logic.RoomGame do
   Start a quest, akin to picking it up and starting it
   """
   def add_quest(player, room) do
-    quest_name = IO.gets("(Which quest would you like to begin?) >> ") |> String.strip
+    quest_name = IO.gets("(Which quest would you like to begin?) >> ")
+    quest_name = String.strip(quest_name)
     case Map.fetch(room.quests, quest_name) do
       {:ok, quest} ->
         Journal.add(:journal, quest_name, quest)
@@ -182,7 +183,7 @@ defmodule TheElixir.Logic.RoomGame do
         player |> RoomGame.get_input(room)
       false  -> 
         tasks = quest.tasks
-        [ task | tasks ] = tasks
+        [task | tasks] = tasks
         player |> RoomGame.solve_task(room, quest, task)
     end
   end
@@ -193,13 +194,14 @@ defmodule TheElixir.Logic.RoomGame do
   """
   def check_answer(player, room, quest, task, question) do
     Question.show(question)
-    answer = IO.gets("(And the answer is...) >> ") |> String.strip
+    answer = IO.gets("(And the answer is...) >> ")
+    answer = String.strip(answer)
     result = task |> Trigger.answer_trigger(question, answer)
     case result do
       {:ok, task} ->
         IO.puts("Correct answer!")
         tasks = quest.tasks
-        [ _ | tasks ] = tasks
+        [_ | tasks] = tasks
         quest = Quest.new(quest.name, quest.description, quest.rewards, tasks)
         player |> RoomGame.solve_task(room, quest, task)
       {:error, _} ->
@@ -212,7 +214,8 @@ defmodule TheElixir.Logic.RoomGame do
   Choose a quest from the journal to complete
   """
   def choose_quest(player, room) do
-    input = IO.gets("Choose a quest to complete: ( or view journal ) >> ") |> String.strip
+    input = IO.gets("Choose a quest to complete: ( or view journal ) >> ")
+    input = String.strip(input)
     case input do
       "j" -> IO.puts(Journal.get(:journal))
         player |> RoomGame.choose_quest(room)
@@ -243,7 +246,7 @@ defmodule TheElixir.Logic.RoomGame do
         player |> RoomGame.solve(room, quest)
       false ->
         questions = task.questions
-        [ question | questions ] = questions
+        [question | questions] = questions
         player |> RoomGame.check_answer(room, quest, task, question)
         player |> RoomGame.solve_task(room, quest, task)
     end

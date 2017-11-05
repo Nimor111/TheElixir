@@ -33,8 +33,8 @@ defmodule TheElixir.Logic.Game do
   to be interpreted
   """
   def get_input(player) do
-    input = IO.gets("(press h for help) >> ") |> String.strip
-    player |> Game.match_input(input)
+    input = IO.gets("(press h for help) >> ")
+    player |> Game.match_input(String.strip(input))
   end
 
   @doc """
@@ -162,7 +162,7 @@ defmodule TheElixir.Logic.Game do
   """
   def room(rooms, _) when rooms == [], do: "There is no room nearby!"
   def room(rooms, player) do
-    [ room_name | _  ] = rooms
+    [room_name | _] = rooms
     RoomGame.pick_room(player, room_name)
   end
 end

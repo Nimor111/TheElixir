@@ -72,7 +72,7 @@ defmodule TheElixir.Components.World do
 
   def handle_call({:get, []}, _from, world) do
     room_names = :ets.match(world, {:"$1", :_})
-                 |> List.flatten
+    room_names = List.flatten(room_names)
     {:reply, room_names, world}
   end
 

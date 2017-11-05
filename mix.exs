@@ -4,7 +4,7 @@ defmodule TheElixir.Mixfile do
   def project do
     [app: :the_elixir,
      version: "0.1.0",
-     elixir: "~> 1.4",
+     elixir: "~> 1.5.1",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
@@ -15,7 +15,7 @@ defmodule TheElixir.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     # Specify extra applications you'll use from Erlang/Elixir
-    [extra_applications: [:logger],
+    [extra_applications: [:logger, :postgrex, :ecto],
      mod: {TheElixir.Application, []}]
   end
 
@@ -29,6 +29,11 @@ defmodule TheElixir.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      {:postgrex, "~> 0.13"},
+      {:ecto, "~> 2.0"},
+      {:poison, "~> 3.1"},
+      {:credo, "~> 0.8", only: [:dev, :test], runtime: false}
+    ]
   end
 end
