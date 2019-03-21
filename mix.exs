@@ -4,7 +4,7 @@ defmodule TheElixir.Mixfile do
   def project do
     [app: :the_elixir,
      version: "0.1.0",
-     elixir: "~> 1.5.1",
+     elixir: "~> 1.8.0",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
@@ -31,9 +31,9 @@ defmodule TheElixir.Mixfile do
   defp deps do
     [
       {:postgrex, "~> 0.13"},
-      {:ecto, "~> 2.0"},
+      {:ecto_sql, "~> 3.0"},
       {:poison, "~> 3.1"},
-      {:credo, "~> 0.8", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
   end
 end

@@ -3,7 +3,6 @@
 use Mix.Config
 
 config :the_elixir, TheElixir.Repo,
-  adapter: Ecto.Adapters.Postgres,
   database: "the_elixir",
   username: "postgres",
   password: "",

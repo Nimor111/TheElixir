@@ -2,13 +2,13 @@ defmodule TheElixir.Lobby do
   @moduledoc """
   Main lobby for the game
   """
-  
+
   alias TheElixir.Logic.NewGame
   alias TheElixir.Lobby
   alias TheElixir.Logic.Game
 
   def print_main_menu do
-    """ 
+    """
     1. New game
     2. Continue
     3. Exit
@@ -41,7 +41,7 @@ defmodule TheElixir.Lobby do
       2 -> IO.puts(Lobby.continue)
       3 -> Lobby.exit
       _   -> IO.puts("Try again!")
-             Lobby.loop 
+             Lobby.loop
     end
   end
 
