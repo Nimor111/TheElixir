@@ -32,7 +32,7 @@ defmodule TheElixir.Mixfile do
     [
       {:postgrex, "~> 0.13"},
       {:ecto_sql, "~> 3.0"},
-      {:poison, "~> 3.1"},
+      {:poison, "~> 4.0"},
       {:credo, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
   end
